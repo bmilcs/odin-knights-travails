@@ -1,6 +1,6 @@
 # Odin Project #16: Knights Travails
 
-Welcome to Bryan Miller's Knights Travails Project, the [sisteenth assignment](https://www.theodinproject.com/lessons/javascript-knights-travails) within the Odin Project curriculum. The goal of this repo is to practice the following skill sets:
+Welcome to Bryan Miller's Knights Travails Project, the [sixteenth assignment](https://www.theodinproject.com/lessons/javascript-knights-travails) within the Odin Project curriculum. The goal of this repo is to practice the following skill sets:
 
 - Vanilla JavaScript
 - Computer Science Data Structures
