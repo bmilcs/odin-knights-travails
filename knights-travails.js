@@ -16,7 +16,6 @@ class Gameboard {
   }
 
   potentialMoves(pos) {
-    console.log(pos);
     const col = pos[1];
     const row = pos[0];
     const moves = [
@@ -56,21 +55,50 @@ class Gameboard {
 
 const knightMoves = (start, target) => {
   const board = new Gameboard();
+  const [targetRow, targetCol] = target;
 
-  board.mark(start);
+  // prevent target position outside of the board
+  if (targetRow > this.size - 1 || targetCol > this.size - 1) {
+    console.log("Out of bounds! Nice try, wise guy.");
+    return;
+  }
+
+  board.mark(start, 0);
   board.print();
 
-  const moves = board.potentialMoves(start);
-  moves.forEach((move) => {
-    board.mark(move, 1);
-    const nextMoves = board.potentialMoves(move);
-    nextMoves.forEach((next) => {
-      board.mark(next, 2);
-      console.log(next);
+  const moveHistory = new Set();
+  let level = 0;
+  const queue = [[start, level]];
+
+  while (queue.length) {
+    const [current, level] = queue.shift();
+    const [currentRow, currentCol] = current;
+
+    if (currentRow === targetRow && currentCol === targetCol) {
+      console.log("found it! total moves:", level);
+      board.print();
+      return;
+    }
+
+    moveHistory.add(current);
+    board.mark(current, level);
+    const nextMove = board.potentialMoves(current);
+
+    nextMove.forEach((move) => {
+      // check if move has been made already:
+      let historyContainsNextMove = 0;
+      for (const prevMov of moveHistory) {
+        if (prevMov.toString() === move.toString()) {
+          historyContainsNextMove = 1;
+        }
+      }
+
+      if (!historyContainsNextMove) {
+        moveHistory.add(current);
+        queue.push([move, level + 1]);
+      }
     });
-  });
-
-  board.print();
+  }
 };
 
-knightMoves([6, 2], [8, 8]);
+knightMoves([3, 3], [8, 8]);
