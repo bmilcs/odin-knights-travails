@@ -9,7 +9,7 @@ class Gameboard {
     for (let row = 0; row < size; row++) {
       board[row] = [];
       for (let col = 0; col < size; col++) {
-        board[row][col] = " ";
+        board[row][col] = "-";
       }
     }
     return board;
@@ -57,31 +57,33 @@ const knightMoves = (start, target) => {
   const board = new Gameboard();
   const [targetRow, targetCol] = target;
 
+  console.log(`start ${start}\ntarget: ${target}`);
+
   // prevent target position outside of the board
   if (targetRow > this.size - 1 || targetCol > this.size - 1) {
     console.log("Out of bounds! Nice try, wise guy.");
     return;
   }
 
-  board.mark(start, 0);
-  board.print();
-
   const moveHistory = new Set();
   let level = 0;
-  const queue = [[start, level]];
+  const queue = [[start, level, []]];
 
   while (queue.length) {
-    const [current, level] = queue.shift();
+    let [current, level, history] = queue.shift();
     const [currentRow, currentCol] = current;
+
+    moveHistory.add(current);
+    history = [...history, current];
 
     if (currentRow === targetRow && currentCol === targetCol) {
       console.log("found it! total moves:", level);
+      console.log(history.join(" -> "), "\n");
+      history.forEach((m, i) => board.mark(m, i));
       board.print();
       return;
     }
 
-    moveHistory.add(current);
-    board.mark(current, level);
     const nextMove = board.potentialMoves(current);
 
     nextMove.forEach((move) => {
@@ -95,10 +97,12 @@ const knightMoves = (start, target) => {
 
       if (!historyContainsNextMove) {
         moveHistory.add(current);
-        queue.push([move, level + 1]);
+        queue.push([move, level + 1, history]);
       }
     });
   }
 };
 
-knightMoves([3, 3], [8, 8]);
+knightMoves([0, 0], [1, 2]);
+knightMoves([0, 0], [3, 3]);
+knightMoves([3, 3], [0, 0]);
