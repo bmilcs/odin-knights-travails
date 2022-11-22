@@ -115,7 +115,6 @@ const knightMoves = (start, target, boardSize = 9) => {
 // Test Data
 
 knightMoves([3, 3], [0, 10]); // error checking: out of bounds
-knightMoves([0, 0], [1, 2]);
-knightMoves([0, 0], [3, 3]);
-knightMoves([3, 3], [0, 0]);
+knightMoves([0, 0], [8, 5]);
+knightMoves([8, 5], [0, 0]);
 knightMoves([3, 0], [8, 8]);
