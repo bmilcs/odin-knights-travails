@@ -81,7 +81,6 @@ const knightMoves = (start, target, boardSize = 9) => {
     let [currentPosition, currentPositionsHistory] = queue.shift();
     const [currentRow, currentCol] = currentPosition;
 
-    allPreviousMoves.add(currentPosition);
     currentPositionsHistory = [...currentPositionsHistory, currentPosition];
 
     if (currentRow === targetRow && currentCol === targetCol) {
@@ -94,6 +93,8 @@ const knightMoves = (start, target, boardSize = 9) => {
       board.print();
       return;
     }
+
+    allPreviousMoves.add(currentPosition);
 
     const nextMove = board.getKnightMoves(currentPosition);
 
