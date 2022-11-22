@@ -9,38 +9,40 @@ class Gameboard {
     for (let row = 0; row < size; row++) {
       board[row] = [];
       for (let col = 0; col < size; col++) {
-        board[row][col] = "-";
+        board[row][col] = "_";
       }
     }
     return board;
   }
 
-  potentialMoves(pos) {
-    const col = pos[1];
-    const row = pos[0];
+  getKnightMoves(pos) {
+    const [col, row] = pos;
     const moves = [
-      [row + 2, col + 1],
-      [row - 2, col + 1],
-      [row + 2, col - 1],
-      [row - 2, col - 1],
-      [row + 1, col + 2],
-      [row - 1, col + 2],
-      [row + 1, col - 2],
-      [row - 1, col - 2],
+      [col + 2, row + 1],
+      [col - 2, row + 1],
+      [col + 2, row - 1],
+      [col - 2, row - 1],
+      [col + 1, row + 2],
+      [col - 1, row + 2],
+      [col + 1, row - 2],
+      [col - 1, row - 2],
     ];
-    return moves.filter(
-      (move) =>
-        move[0] >= 0 &&
-        move[1] >= 0 &&
-        move[0] < this.size &&
-        move[1] < this.size
-    );
+    return moves.filter((move) => this.isPositionOnBoard(move));
   }
 
-  mark(pos, marker = "X") {
-    const row = pos[0];
-    const col = pos[1];
+  markMove(move, marker = "x") {
+    const [col, row] = move;
     this.board[row][col] = marker;
+  }
+
+  markMoveHistory(movesArray) {
+    movesArray.forEach((move, i) => this.markMove(move, i));
+  }
+
+  isPositionOnBoard(pos) {
+    const [col, row] = pos;
+    if (col >= 0 && row >= 0 && col < this.size && row < this.size) return true;
+    return false;
   }
 
   print() {
@@ -48,7 +50,7 @@ class Gameboard {
     for (let i = 0; i < this.size; i++) {
       columnNumbers = `${columnNumbers}${i},`;
     }
-    console.log(columnNumbers.slice(0, -1));
+    console.log(`\n${columnNumbers.slice(0, -1)}`);
     this.board.forEach((row, i) => console.log(i, `${row}`));
   }
 }
@@ -57,37 +59,39 @@ const knightMoves = (start, target) => {
   const board = new Gameboard();
   const [targetRow, targetCol] = target;
 
-  console.log(`start ${start}\ntarget: ${target}`);
-
-  // prevent target position outside of the board
-  if (targetRow > this.size - 1 || targetCol > this.size - 1) {
-    console.log("Out of bounds! Nice try, wise guy.");
+  // prevent illegal user input
+  if (!board.isPositionOnBoard(start) || !board.isPositionOnBoard(target)) {
+    console.log(
+      `\nerror!\n- invalid input: one of your positions doesn't land on the board!\n- start: [${start}] | target: [${target}]\n`
+    );
     return;
   }
 
   const moveHistory = new Set();
-  let level = 0;
-  const queue = [[start, level, []]];
+  const queue = [[start, []]];
 
   while (queue.length) {
-    let [current, level, history] = queue.shift();
-    const [currentRow, currentCol] = current;
+    let [currentPosition, history] = queue.shift();
+    const [currentRow, currentCol] = currentPosition;
 
-    moveHistory.add(current);
-    history = [...history, current];
+    moveHistory.add(currentPosition);
+    history = [...history, currentPosition];
 
     if (currentRow === targetRow && currentCol === targetCol) {
-      console.log("found it! total moves:", level);
-      console.log(history.join(" -> "), "\n");
-      history.forEach((m, i) => board.mark(m, i));
+      console.log("\nKNIGHT TRAVAILS __________________________\n");
+      console.log(`start position:    ${start}`);
+      console.log(`target position:   ${target}`);
+      console.log(`moves count:       ${history.length - 1}`);
+      console.log(`move breakdown:    ${history.join(" -> ")}`);
+      console.log("gameboard:");
+      board.markMoveHistory(history);
       board.print();
       return;
     }
 
-    const nextMove = board.potentialMoves(current);
+    const nextMove = board.getKnightMoves(currentPosition);
 
     nextMove.forEach((move) => {
-      // check if move has been made already:
       let historyContainsNextMove = 0;
       for (const prevMov of moveHistory) {
         if (prevMov.toString() === move.toString()) {
@@ -96,8 +100,8 @@ const knightMoves = (start, target) => {
       }
 
       if (!historyContainsNextMove) {
-        moveHistory.add(current);
-        queue.push([move, level + 1, history]);
+        moveHistory.add(currentPosition);
+        queue.push([move, history]);
       }
     });
   }
@@ -106,3 +110,4 @@ const knightMoves = (start, target) => {
 knightMoves([0, 0], [1, 2]);
 knightMoves([0, 0], [3, 3]);
 knightMoves([3, 3], [0, 0]);
+knightMoves([3, 3], [8, 9]);
