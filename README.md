@@ -38,7 +38,7 @@ Initially, I couldn't wrap my head around not only finding the shortest travel d
 
 In order to find out if the current position matched the target position, I needed to compare two arrays. This threw me for a loop, but Google & Stackoverflow came to the rescue with the string conversion method.
 
-Having a `.print()` method available to me and visually watching the ouput via the console and debugger, it became obvious that I was repeating a lot of moves on the board. If a previous iteration had already visited a position on the board, the current iteration trying to make that same move must be equal to or less efficient than the original move. So, I created a `allPreviousMoves` Set and prevented all future duplicate moves with a conditional statement.
+Having a `.print()` method available to me and visually watching the ouput via the console and debugger, it became obvious that I was repeating a lot of moves on the board. If a previous iteration had already visited a position on the board, the current iteration trying to make that same move must be equal to or less efficient than the original move. So, I created an `allPreviousMoves` Set and prevented all future duplicate moves with a conditional statement.
 
 My algorithm was improving, but I still didn't have a solution for tracking all of the moves along the shortest path. Then, it dawned on me: I can replace the counter (aka tree level) with a copy of all previous moves made by the current iteration. I swapped the counter with a nested `currentPositionsHistory` array and the rest is history.
 
