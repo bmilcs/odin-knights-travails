@@ -10,7 +10,7 @@ Welcome to Bryan Miller's Knights Travails Project, the [sixteenth assignment](h
 
 ## Summary
 
-At first glance, completing _Knights Travails_ seemed like an impossible task. Thankfully, the Odin Project prepared us for situations like this. After breaking down the larger problem into manageable, bite-size tasks, I was able to come up with a solution that works. It may not be the most computationally efficient or elegant way of getting it done, but it does get the job done.
+At first glance, completing _Knights Travails_ seemed like an impossible task. Thankfully, the Odin Project prepared us for situations like this. After breaking down the larger problem into manageable, bite-size problems, I was able to come up with a solution that works. It may not be the most computationally efficient or elegant way of getting it done, but it does get the job done.
 
 I broke the logic down for this problem into two sections:
 
