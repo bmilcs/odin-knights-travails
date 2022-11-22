@@ -65,4 +65,7 @@ All in all, this assignment has cemented the importance of keeping a growth mind
 ```sh
 # clone repo
 git clone https://github.com/bmilcs/odin-knights-travails
+
+# run script (*requires node)
+node knights-travails.js
 ```
